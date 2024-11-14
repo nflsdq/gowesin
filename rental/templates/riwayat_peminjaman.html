@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Riwayat Peminjaman - GowesIN{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Riwayat Peminjaman</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID Peminjaman</th>
+                    <th>Sepeda</th>
+                    <th>Waktu Pengambilan</th>
+                    <th>Waktu Pengembalian</th>
+                    <th>Total Biaya</th>
+                    <th>Status Pembayaran</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for peminjaman in peminjaman_list %}
+                <tr>
+                    <td>{{ peminjaman.id_peminjaman }}</td>
+                    <td>{{ peminjaman.sepeda.jenis_sepeda }}</td>
+                    <td>{{ peminjaman.waktu_pengambilan }}</td>
+                    <td>{{ peminjaman.waktu_pengembalian|default:"Belum dikembalikan" }}</td>
+                    <td>
+                        {% if peminjaman.total_biaya %}
+                            Rp {{ peminjaman.total_biaya|floatformat:0 }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>{{ peminjaman.status_pembayaran }}</td>
+                    <td>
+                        <a href="{% url 'detail_peminjaman' peminjaman.id_peminjaman %}" class="btn btn-sm btn-primary">Detail</a>
+                        {% if not peminjaman.waktu_pengembalian %}
+                            <a href="{% url 'kembalikan_sepeda' peminjaman.id_peminjaman %}" class="btn btn-sm btn-warning">Kembalikan</a>
+                        {% elif peminjaman.status_pembayaran == 'Belum Dibayar' %}
+                            <a href="{% url 'pembayaran' peminjaman.id_peminjaman %}" class="btn btn-sm btn-success">Bayar</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">Tidak ada riwayat peminjaman.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

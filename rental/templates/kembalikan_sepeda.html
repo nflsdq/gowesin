@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Kembalikan Sepeda - GowesIN{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Kembalikan Sepeda</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Detail Peminjaman</h5>
+                    <p><strong>Sepeda:</strong> {{ peminjaman.sepeda.jenis_sepeda }}</p>
+                    <p><strong>Waktu Pengambilan:</strong> {{ peminjaman.waktu_pengambilan }}</p>
+                    <p><strong>Stasiun Pengambilan:</strong> {{ peminjaman.stasiun_pengambilan.nama_stasiun }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Pilih Stasiun Pengembalian</h5>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="stasiun_id" class="form-label">Stasiun Pengembalian</label>
+                            <select class="form-select" id="stasiun_id" name="stasiun_id" required>
+                                <option value="">Pilih Stasiun</option>
+                                {% for stasiun in stasiun_list %}
+                                    <option value="{{ stasiun.id_stasiun }}">{{ stasiun.nama_stasiun }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Kembalikan Sepeda</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

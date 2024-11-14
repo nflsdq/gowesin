@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Daftar Sepeda - GowesIN{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Daftar Sepeda</h1>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        {% for sepeda in sepeda_list %}
+        <div class="col">
+            <div class="card h-100 shadow-sm hover-card">
+                <img src="https://source.unsplash.com/300x200/?bicycle,{{ sepeda.jenis_sepeda }}" class="card-img-top" alt="{{ sepeda.jenis_sepeda }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ sepeda.get_jenis_sepeda_display }}</h5>
+                    <p class="card-text">Kondisi: {{ sepeda.get_kondisi_sepeda_display }}</p>
+                    <p class="card-text">Biaya: {{ sepeda.biaya_sepeda }}</p>
+                    <p class="card-text"><small class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>{{ sepeda.stasiun.nama_stasiun }}</small></p>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <span class="fw-bold">Status: {{ sepeda.get_status_sepeda_display }}</span>
+                    <a href="{% url 'detail_sepeda' sepeda.id_sepeda %}" class="btn btn-outline-primary">Detail</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

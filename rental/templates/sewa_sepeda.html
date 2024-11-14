@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Sewa {{ sepeda.jenis_sepeda }} - GowesIN{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <h1 class="mb-4">Sewa Sepeda</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="https://source.unsplash.com/600x400/?bicycle,{{ sepeda.jenis_sepeda }}" class="img-fluid rounded" alt="{{ sepeda.jenis_sepeda }}">
+        </div>
+        <div class="col-md-6">
+            <h2>{{ sepeda.jenis_sepeda }}</h2>
+            <p><strong>Kondisi:</strong> {{ sepeda.kondisi_sepeda }}</p>
+            <p><strong>Lokasi Pengambilan:</strong> {{ sepeda.stasiun.nama_stasiun }}</p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <!-- <label for="durasi" class="form-label">Durasi Sewa (jam)</label>
+                    <input type="number" class="form-control" id="durasi" name="durasi" min="1" max="24" value="1" required> -->
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">Konfirmasi Sewa</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

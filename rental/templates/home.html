@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block title %}GowesIN - Sewa Sepeda{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="display-4 fw-bold mb-4">Jelajahi Kampusmu dengan GowesIN</h1>
+                <p class="lead mb-4">Penyewaan sepeda per jam yang terjangkau dan ramah lingkungan. Nikmati kebebasan bersepeda tanpa beban kepemilikan.</p>
+                <a href="{% url 'daftar_sepeda' %}" class="btn btn-primary btn-lg">Mulai Bersepeda</a>
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'images/sepeda_gunung.webp' %}" alt="Ilustrasi Sepeda" class="img-fluid gambar-home">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card shadow-lg rounded-lg">
+                <div class="card-body p-5">
+                    <h2 class="card-title text-center mb-4">Temukan Sepeda Sempurna Anda</h2>
+                    <form action="{% url 'daftar_sepeda' %}" method="get">
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <select class="form-select" name="jenis_sepeda" aria-label="Pilih jenis sepeda">
+                                    <option selected>Jenis Sepeda</option>
+                                    {% for sepeda in sepeda_tersedia %}
+                                    <option value="{{ sepeda.get_jenis_sepeda_display }}">{{ sepeda.get_jenis_sepeda_display }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <select class="form-select" name="stasiun" aria-label="Pilih stasiun">
+                                    <option selected>Stasiun</option>
+                                    {% for stasiun in stasiun_list %}
+                                    <option value="{{ stasiun.id_stasiun }}">{{ stasiun.nama_stasiun }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary w-100">Cari</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="text-center mt-5 mb-4">Sepeda Tersedia</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        {% for sepeda in sepeda_tersedia|slice:":4" %}
+        <div class="col">
+            <div class="card h-100 shadow-sm hover-card">
+                <img src="https://source.unsplash.com/300x200/?bicycle,{{ sepeda.jenis_sepeda }}" class="card-img-top" alt="{{ sepeda.get_jenis_sepeda_display }}">
+                <div class="bike-type-badge">{{ sepeda.get_jenis_sepeda_display }}</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ sepeda.get_jenis_sepeda_display }}</h5>
+                    <p class="card-text">Kondisi: {{ sepeda.get_kondisi_sepeda_display }}</p>
+                    <p class="card-text">Biaya: {{ sepeda.biaya_sepeda }}</p>
+                    <p class="card-text"><small class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>{{ sepeda.stasiun.nama_stasiun }}</small></p>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <span class="fw-bold">Status: {{ sepeda.get_status_sepeda_display }}</span>
+                    <a href="{% url 'detail_sepeda' sepeda.id_sepeda %}" class="btn btn-outline-primary">Detail</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'daftar_sepeda' %}" class="btn btn-outline-primary btn-lg">Lihat Semua Sepeda</a>
+    </div>
+
+    <h2 class="text-center mt-5 mb-4">Stasiun Sepeda</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for stasiun in stasiun_list|slice:":3" %}
+        <div class="col">
+            <div class="card h-100 shadow-sm hover-card">
+                <img src="https://source.unsplash.com/400x250/?train_station,{{ stasiun.nama_stasiun }}" class="card-img-top" alt="{{ stasiun.nama_stasiun }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ stasiun.nama_stasiun }}</h5>
+                    <p class="card-text">Lokasi: {{ stasiun.lokasi }}</p>
+                    <p class="card-text">Kapasitas: {{ stasiun.jumlah_sepeda }} / {{ stasiun.kapasitas }}</p>
+                </div>
+                <div class="card-footer">
+                    <a href="" class="btn btn-primary">Detail</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}    
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'daftar_stasiun' %}" class="btn btn-outline-primary btn-lg">Lihat Semua Stasiun</a>
+    </div>
+
+<section class="bg-light py-5 mt-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Cara Kerja BikeRent</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm text-center hover-card">
+                    <div class="card-body">
+                        <i class="fas fa-search fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">1. Cari Sepeda</h5>
+                        <p class="card-text">Pilih jenis sepeda dan lokasi stasiun yang Anda inginkan.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm text-center hover-card">
+                    <div class="card-body">
+                        <i class="fas fa-bicycle fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">2. Sewa Sepeda</h5>
+                        <p class="card-text">Ambil sepeda dari stasiun dan mulai perjalanan Anda.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm text-center hover-card">
+                    <div class="card-body">
+                        <i class="fas fa-undo fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">3. Kembalikan Sepeda</h5>
+                        <p class="card-text">Kembalikan sepeda ke stasiun mana pun saat selesai.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

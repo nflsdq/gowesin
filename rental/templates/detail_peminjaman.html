@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Detail Peminjaman - GowesIN{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Detail Peminjaman</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Peminjaman #{{ peminjaman.id_peminjaman }}</h5>
+            <p><strong>Pelanggan:</strong> {{ peminjaman.pelanggan.nama }}</p>
+            <p><strong>Sepeda:</strong> {{ peminjaman.sepeda.jenis_sepeda }}</p>
+            <p><strong>Waktu Pengambilan:</strong> {{ peminjaman.waktu_pengambilan }}</p>
+            <p><strong>Stasiun Pengambilan:</strong> {{ peminjaman.stasiun_pengambilan.nama_stasiun }}</p>
+            {% if peminjaman.waktu_pengembalian %}
+                <p><strong>Waktu Pengembalian:</strong> {{ peminjaman.waktu_pengembalian }}</p>
+                <p><strong>Stasiun Pengembalian:</strong> {{ peminjaman.stasiun_pengembalian.nama_stasiun }}</p>
+                <p><strong>Durasi:</strong> {{ peminjaman.waktu_pengembalian|timeuntil:peminjaman.waktu_pengambilan }}</p>
+                <p><strong>Total Biaya:</strong> Rp {{ peminjaman.total_biaya }}</p>
+                <p><strong>Status Pembayaran:</strong> {{ peminjaman.status_pembayaran }}</p>
+            {% else %}
+                <p><strong>Status:</strong> Sedang Disewa</p>
+                <a href="{% url 'kembalikan_sepeda' peminjaman.id_peminjaman %}" class="btn btn-primary">Kembalikan Sepeda</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
